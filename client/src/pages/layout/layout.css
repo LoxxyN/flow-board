@@ -1,0 +1,17 @@
+.layout {
+	display: grid;
+	grid-template-columns: 260px repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+}
+
+.header-wrapper {
+	grid-area: 1 / 1 / 2 / 5;
+}
+.sidebar-wrapper {
+	grid-area: 2 / 1 / 4 / 2;
+}
+.content-wrapper {
+	grid-area: 2 / 2 / 4 / 5;
+}
