@@ -44,14 +44,6 @@ flow-board/
   client/               <- Vite + React (пока НЕ создан)
 ```
 
-## Текущее состояние (сделано)
-
-- [x] Скелет `server/`: package.json, tsconfig, prisma/schema.prisma, .env, src/\* (index, db, validation, routes/tasks), prisma/seed.ts
-- [x] Зависимости сервера установлены (hono, @prisma/client, prisma, tsx, zod и т.д.)
-- [x] Схема Prisma (Task + enums Priority/Status), seed с 4 задачами
-- [x] `npm run db:migrate` **НЕ выполнено** (нужно подключение к Postgres)
-- [x] Клиент `client/` **не создан**
-
 ## План работ (по порядку)
 
 ### Этап 0 — БД

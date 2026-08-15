@@ -1,7 +1,7 @@
 export const Logo = () => {
 	return (
 		<a href='/'>
-			<img src='/logo.svg' alt='logo' />
+			<img src='/icons/logo.svg' alt='logo' />
 		</a>
 	)
 }
