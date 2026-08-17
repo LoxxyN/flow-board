@@ -1,1 +1,1 @@
-export { TodoListWrapper } from './todo-list-wrapper'
+export { TodoColumn } from './todo-board/ui/todo-column'

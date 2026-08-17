@@ -1,22 +1,17 @@
 import type { TodoPriority } from '@shared/types'
 import { Avatar, Card, Chip } from '@shared/ui'
 
-interface TodoListCardProps {
+interface TodoCardProps {
 	title: string
 	description: string
 	priority: TodoPriority
 }
 
-export const TodoListCard = ({
-	title,
-	description,
-	priority,
-}: TodoListCardProps) => {
+export const TodoCard = ({ title, description, priority }: TodoCardProps) => {
 	return (
 		<Card
 			title={title}
 			description={description}
-			variant='secondary'
 			isVertical
 			body={
 				<div className='flex justify-between'>

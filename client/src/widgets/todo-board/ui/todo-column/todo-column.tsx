@@ -2,19 +2,19 @@ import { Chip } from '@heroui/react'
 import { For } from '@shared/lib'
 import type { ITodo } from '@shared/types'
 import { Card } from '@shared/ui'
-import { TodoListCard } from './ui'
+import { TodoCard } from './todo-card'
 
-interface TodoListProps {
+interface TodoColumnProps {
 	items: ITodo[]
 	listTitle: string
 	todosCount: number
 }
 
-export const TodoListWrapper = ({
+export const TodoColumn = ({
 	items,
 	todosCount,
 	listTitle,
-}: TodoListProps) => {
+}: TodoColumnProps) => {
 	return (
 		<Card
 			title={listTitle}
@@ -25,7 +25,7 @@ export const TodoListWrapper = ({
 					<For each={items}>
 						{item => (
 							<li>
-								<TodoListCard key={item.id} {...item} />
+								<TodoCard key={item.id} {...item} />
 							</li>
 						)}
 					</For>

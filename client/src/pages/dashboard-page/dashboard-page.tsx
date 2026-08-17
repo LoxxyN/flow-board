@@ -1,5 +1,5 @@
 import type { ITodo } from '@shared/types'
-import { TodoListWrapper } from '@widgets/todo-list-wrapper'
+import { TodoBoard } from '@widgets/todo-board/ui/todo-board'
 
 const TODOS: ITodo[] = [
 	{
@@ -46,31 +46,11 @@ const TODOS: ITodo[] = [
 	},
 ]
 
-const todoTodos = [...TODOS.filter(item => item.status === 'todo')]
-const inProgressTodo = [...TODOS.filter(item => item.status === 'in_progress')]
-const doneTodos = [...TODOS.filter(item => item.status === 'done')]
-
 export const DashboardPage = () => {
 	return (
 		<div>
 			<h2 className='font-extrabold text-2xl mb-6'>Разработка MVP</h2>
-			<div className='grid grid-cols-3 gap-x-5'>
-				<TodoListWrapper
-					items={todoTodos}
-					listTitle='Todo'
-					todosCount={todoTodos.length}
-				/>
-				<TodoListWrapper
-					items={inProgressTodo}
-					listTitle='In progress'
-					todosCount={inProgressTodo.length}
-				/>
-				<TodoListWrapper
-					items={doneTodos}
-					listTitle='Done'
-					todosCount={doneTodos.length}
-				/>
-			</div>
+			<TodoBoard todos={TODOS} />
 		</div>
 	)
 }
