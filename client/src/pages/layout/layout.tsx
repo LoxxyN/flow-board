@@ -12,7 +12,7 @@ export const Layout = () => {
 				<Sidebar />
 			</div>
 			<div className='content-wrapper'>
-				<main className='p-8'>
+				<main className='p-6'>
 					<Outlet />
 				</main>
 			</div>
