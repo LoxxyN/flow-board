@@ -1,30 +1,30 @@
-# flow-board - план работ
+# flow-board — план работ
 
 ## Проект
 
-**flow-board** — канбан-доска / трекер задач. Fullstack: клиент (React) + REST API (Hono) + PostgreSQL через Prisma.  
+**flow-board** — канбан-доска / трекер задач. Fullstack: клиент (React) + REST API (Hono) + PostgreSQL через Prisma.
 Цель обучения: routing, асинхронные данные (TanStack Query), формы с валидацией (React Hook Form + zod), REST API, ORM/база данных, тесты.
 
 ## Стек
 
-| Слой   | Технология                                                                                 |
-| ------ | ------------------------------------------------------------------------------------------ |
-| Клиент | Vite + React 19 + TS, Tailwind CSS v4, React Router, TanStack Query, React Hook Form + zod |
-| Сервер | Hono + @hono/node-server, zod, CORS                                                        |
-| ORM/БД | Prisma + PostgreSQL 17 (локальный, localhost:5432)                                         |
-| Тесты  | Vitest + jsdom + Testing Library                                                           |
+| Слой   | Технология                                                                                                             |
+| ------ | ---------------------------------------------------------------------------------------------------------------------- |
+| Клиент | Vite + React 19 + TS, Tailwind CSS v4, React Router v8, TanStack Query, React Hook Form + zod, HeroUI v3, Lucide React |
+| Сервер | Hono + @hono/node-server, zod, CORS, @prisma/adapter-pg (Prisma 7)                                                     |
+| ORM/БД | Prisma 7 + PostgreSQL 17 (localhost:5432)                                                                              |
+| Тесты  | Vitest + jsdom + Testing Library                                                                                       |
 
 ## Модель данных
 
 ```ts
 Task {
-  id: string (uuid)
-  title: string
-  description: string | null
-  priority: 'low' | 'medium' | 'high'   // Prisma enum Priority
-  status: 'todo' | 'in_progress' | 'done' // Prisma enum Status (подчёркивание, не дефис!)
-  createdAt: datetime
-  updatedAt: datetime
+  id: string (uuid)
+  title: string
+  description: string | null
+  priority: 'low' | 'medium' | 'high'    // Prisma enum Priority
+  status: 'todo' | 'in_progress' | 'done' // Prisma enum Status
+  createdAt: datetime
+  updatedAt: datetime
 }
 ```
 
@@ -32,56 +32,71 @@ Task {
 
 ```
 flow-board/
-  TASKS.md              <- этот файл
-  server/               <- Hono + Prisma (уже есть скелет)
-    prisma/schema.prisma
-    prisma/seed.ts
-    src/index.ts        <- точка входа, CORS, /health
-    src/db.ts           <- PrismaClient
-    src/validation.ts   <- zod-схемы
-    src/routes/tasks.ts <- CRUD /api/tasks
-    .env                <- DATABASE_URL, PORT
-  client/               <- Vite + React (пока НЕ создан)
+  AGENTS.md             <- правила для агента
+  TASKS.md              <- этот файл
+  server/
+    prisma/schema.prisma
+    prisma/seed.ts
+    prisma.config.ts
+    src/index.ts         <- CORS, /health, /api/tasks
+    src/db.ts            <- PrismaClient + adapter-pg
+    src/validation.ts    <- zod-схемы
+    src/routes/tasks.ts  <- CRUD /api/tasks
+    .env                 <- DATABASE_URL, PORT=3002
+  client/
+    src/app/             <- main, AppRouter, globals
+    src/pages/           <- layout, dashboard, not-found
+    src/shared/          <- UI-компоненты (avatar и т.д.)
+    index.html
 ```
+
+## Текущее состояние
+
+- [x] Сервер: Hono + Prisma 7, CRUD /api/tasks, .env, seed
+- [x] БД: подключение к Postgres, миграция, seed (4 задачи)
+- [x] Клиент: Vite-скаффолд, Tailwind v4, HeroUI v3, react-router v8
+- [x] Layout: header (навигация), sidebar (заглушка)
+- [x] Роуты: `/` (доска), `/projects`, `/command`, `/settings` (заглушки), `*` (404)
+- [ ] Недостающие пакеты: @tanstack/react-query, react-hook-form, zod, @hookform/resolvers, vitest, jsdom, @testing-library/\*
+- [ ] API-модуль (fetch-функции для CRUD)
+- [ ] Провайдеры: QueryClientProvider
+- [ ] Доска: 3 колонки с карточками
+- [ ] Модалки: создание / редактирование задачи
+
+## Роуты (по макету)
+
+| URL         | Страница  | Описание                                                   |
+| ----------- | --------- | ---------------------------------------------------------- |
+| `/`         | Доска     | 3 колонки (todo / in_progress / done), sidebar с фильтрами |
+| `/projects` | Проекты   | Заглушка (потом)                                           |
+| `/command`  | Команда   | Заглушка (потом)                                           |
+| `/settings` | Настройки | Заглушка (потом)                                           |
+| `*`         | 404       | Страница не найдена                                        |
+
+**Создание/редактирование задачи — модалки** (не отдельные роуты), открываются из доски.
 
 ## План работ (по порядку)
 
-### Этап 0 — БД
+### Этап 2 — Клиент: каркас (продолжение)
 
-- [x] Подключение к Postgres: решить вопрос с паролем, вписать DATABASE_URL в `server/.env`
-- [x] Создать БД `flow_board` (CREATE DATABASE)
-- [x] `npm run db:migrate` в `server/` — применить схему
-- [x] `npm run db:seed` — заполнить тестовыми задачами
-- [x] Проверить в psql: SELECT \* FROM tasks
+- [ ] Установить: @tanstack/react-query, react-hook-form, @hookform/resolvers, zod
+- [ ] API-модуль: `client/src/shared/api/tasks.ts` — 5 функций (getTasks, getTask, createTask, updateTask, deleteTask)
+- [ ] Провайдеры: QueryClientProvider в main.tsx
+- [ ] Базовый URL API: вынести `http://localhost:3002` в константу
+- [ ] Установить (dev): vitest, jsdom, @testing-library/react, @testing-library/jest-dom, @testing-library/user-event
 
-### Этап 1 — REST API
+### Этап 3 — Клиент: доска и данные
 
-- [ ] Запустить сервер `npm run dev` (tsx watch)
-- [ ] Проверить `GET /health` и `GET /api/tasks` (curl или браузер)
-- [ ] Прогнать CRUD вручную: create / update / delete через curl
-- [ ] Разобрать каждый файл сервера с пользователем (что такое Hono-роут, zod-валидация, Prisma-вызовы)
-
-### Этап 2 — Клиент: каркас
-
-- [x] Скаффолд Vite (react-ts) в `client/` + Tailwind
-- [ ] Установить react-router-dom, @tanstack/react-query, react-hook-form, zod, @hookform/resolvers
-- [ ] В dev-зависимости: vitest, jsdom, @testing-library/react, @testing-library/jest-dom, @testing-library/user-event
-- [ ] API-модуль: fetch к `http://localhost:3001/api/tasks` (CRUD-функции)
-- [ ] Провайдеры: QueryClientProvider, Router
-
-### Этап 3 — Клиент: страницы и данные
-
-- [ ] Роуты: `/` (доска), `/tasks/new`, `/tasks/:id`, `/tasks/:id/edit`, `*` (404), layout с навигацией
 - [ ] `useQuery` для списка задач (loading / error / retry)
 - [ ] `useQuery` для одной задачи
 - [ ] `useMutation` + `invalidateQueries`: create / update / delete
-- [ ] Доска: 3 колонки (todo / in_progress / done), карточки, счётчики, перемещение статуса
-- [ ] Карточка задачи: поля, кнопки «Редактировать» / «Удалить» (удаление с подтверждением)
+- [ ] Доска: 3 колонки (todo / in_progress / done), карточки, счётчики
+- [ ] Sidebar: фильтры (Все задачи, Мои задачи, Проекты, Приоритеты)
 
-### Этап 4 — Формы
+### Этап 4 — Модалки и формы
 
-- [ ] Форма создания: title (мин. 4 символа), description, priority, status — RHF + zod
-- [ ] Форма редактирования с предзаполнением
+- [ ] Модалка создания задачи: title (мин. 4 символа), description, priority, status — RHF + zod
+- [ ] Модалка редактирования с предзаполнением
 - [ ] Ошибки под полями, сброс формы после сабмита
 
 ### Этап 5 — Тесты
@@ -93,12 +108,13 @@ flow-board/
 
 ## Стоп-критерии
 
-- [ ] CRUD работает через UI целиком (создал → увидел → переместил → отредактировал → удалил)
+- [ ] CRUD работает через UI: создал (модалка) → увидел (доска) → переместил → отредактировал (модалка) → удалил
 - [ ] Данные переживают перезапуск (реально в PostgreSQL)
-- [ ] `npm run build`, `npm run lint`, `npm test` — зелёные, без консольных ошибок в dev
+- [ ] `npm run build`, `npm run lint`, `npm test` — зелёные
 
 ## Стреч-опции (не обязательны)
 
 - [ ] Drag & drop через @dnd-kit
 - [ ] Фильтр/сортировка задач
 - [ ] Dark mode
+- [ ] Разделы: Проекты, Команда, Настройки

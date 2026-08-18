@@ -5,14 +5,14 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-	plugins: [react(), tailwindcss()],
-	resolve: {
-		alias: {
-			'@app': path.resolve(__dirname, './src/app'),
-			'@pages': path.resolve(__dirname, './src/pages'),
-			'@shared': path.resolve(__dirname, './src/shared'),
-			'@widgets': path.resolve(__dirname, './src/widgets'),
-			'@features': path.resolve(__dirname, './src/features'),
-		},
-	},
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      '@app': path.resolve(__dirname, './src/app'),
+      '@pages': path.resolve(__dirname, './src/pages'),
+      '@shared': path.resolve(__dirname, './src/shared'),
+      '@widgets': path.resolve(__dirname, './src/widgets'),
+      '@features': path.resolve(__dirname, './src/features'),
+    },
+  },
 })
