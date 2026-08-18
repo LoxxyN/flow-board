@@ -1,5 +1,6 @@
 import type { ITodo } from '@shared/types'
 import { TodoBoard } from '@widgets/todo-board'
+import { DashboardHeading } from '../dashboard-heading'
 
 const TODOS: ITodo[] = [
   {
@@ -48,9 +49,10 @@ const TODOS: ITodo[] = [
 
 export const DashboardPage = () => {
   return (
-    <div>
-      <h2 className="font-extrabold text-2xl mb-6">Разработка MVP</h2>
+    <>
+      <DashboardHeading title="Разработка MVP" />
+
       <TodoBoard todos={TODOS} />
-    </div>
+    </>
   )
 }
