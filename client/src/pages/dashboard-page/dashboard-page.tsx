@@ -1,5 +1,5 @@
 import type { ITodo } from '@shared/types'
-import { TodoBoard } from '@widgets/todo-board/ui/todo-board'
+import { TodoBoard } from '@widgets/todo-board'
 
 const TODOS: ITodo[] = [
 	{

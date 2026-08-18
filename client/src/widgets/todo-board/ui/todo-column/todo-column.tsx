@@ -1,4 +1,5 @@
-import { Chip } from '@heroui/react'
+import { AddTodo } from '@features/add-todo'
+import { Button, Chip } from '@heroui/react'
 import { For } from '@shared/lib'
 import type { ITodo } from '@shared/types'
 import { Card } from '@shared/ui'
@@ -10,6 +11,14 @@ interface TodoColumnProps {
 	todosCount: number
 }
 
+const TriggerButton = () => {
+	return (
+		<Button fullWidth variant='outline' className='border-dashed'>
+			Добавить задачу
+		</Button>
+	)
+}
+
 export const TodoColumn = ({
 	items,
 	todosCount,
@@ -17,19 +26,22 @@ export const TodoColumn = ({
 }: TodoColumnProps) => {
 	return (
 		<Card
+			isVertical
 			title={listTitle}
 			headerRight={<Chip>{todosCount}</Chip>}
-			isVertical
 			body={
-				<ul className='flex flex-col gap-3'>
-					<For each={items}>
-						{item => (
-							<li>
-								<TodoCard key={item.id} {...item} />
-							</li>
-						)}
-					</For>
-				</ul>
+				<>
+					<AddTodo triggerButton={<TriggerButton />} />
+					<ul className='flex flex-col gap-3'>
+						<For each={items}>
+							{item => (
+								<li>
+									<TodoCard key={item.id} {...item} />
+								</li>
+							)}
+						</For>
+					</ul>
+				</>
 			}
 		/>
 	)

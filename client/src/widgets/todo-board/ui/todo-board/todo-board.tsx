@@ -1,5 +1,5 @@
 import type { ITodo } from '@shared/types'
-import { TodoColumn } from '../ui/todo-column'
+import { TodoColumn } from '../todo-column'
 
 export const TodoBoard = ({ todos }: { todos: ITodo[] }) => {
 	const todoTodos = [...todos.filter(item => item.status === 'todo')]

@@ -1,3 +1,5 @@
 export { Avatar } from './avatar'
 export { Card } from './card'
 export { Chip } from './chip'
+export { Modal } from './modal'
+export { Select } from './select'

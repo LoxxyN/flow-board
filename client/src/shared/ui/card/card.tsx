@@ -26,7 +26,7 @@ export const Card = ({
 		>
 			<HCard.Header>
 				<div className='flex items-center justify-between'>
-					<HCard.Title className='font-semibold'>{title}</HCard.Title>
+					<HCard.Title className='font-semibold text-base'>{title}</HCard.Title>
 					{headerRight}
 				</div>
 				<div>
