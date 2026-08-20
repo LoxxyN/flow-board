@@ -1,58 +1,26 @@
-import type { ITodo } from '@shared/types'
+import { useQuery } from '@tanstack/react-query'
 import { TodoBoard } from '@widgets/todo-board'
 import { DashboardHeading } from '../dashboard-heading'
 
-const TODOS: ITodo[] = [
-  {
-    id: 1,
-    title: 'REST API',
-    description: 'CRUD на Nestjs, написать валидацию и контроллеры',
-    status: 'done',
-    priority: 'medium',
-  },
-  {
-    id: 2,
-    title: 'Авторизация',
-    description: 'JWT токены, регистрация и логин',
-    status: 'in_progress',
-    priority: 'high',
-  },
-  {
-    id: 3,
-    title: 'UI дашборда',
-    description: 'Сверстать основную страницу с карточками задач',
-    status: 'in_progress',
-    priority: 'medium',
-  },
-  {
-    id: 4,
-    title: 'Фильтры задач',
-    description: 'Фильтрация по статусу и приоритету',
-    status: 'todo',
-    priority: 'low',
-  },
-  {
-    id: 5,
-    title: 'Деплой на VPS',
-    description: 'Настроить Docker и nginx',
-    status: 'todo',
-    priority: 'high',
-  },
-  {
-    id: 6,
-    title: 'Тесты API',
-    description: 'Unit-тесты для сервисов и контроллеров',
-    status: 'todo',
-    priority: 'medium',
-  },
-]
+const getData = async () => {
+  const res = await fetch('/api/tasks')
+  const data = await res.json()
+  return data
+}
 
 export const DashboardPage = () => {
+  const { isPending, error, data } = useQuery({
+    queryKey: ['todos'],
+    queryFn: getData,
+  })
+
+  if (isPending) return 'Loading...'
+
+  if (error) return 'An error has occurred: ' + error.message
   return (
     <>
       <DashboardHeading title="Разработка MVP" />
-
-      <TodoBoard todos={TODOS} />
+      <TodoBoard todos={data} />
     </>
   )
 }

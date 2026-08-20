@@ -19,7 +19,7 @@ export const Modal = ({ triggerButton, title, children, footer, size = 'md' }: M
             <HModal.CloseTrigger />
             {title && (
               <HModal.Header>
-                <HModal.Heading>{title}</HModal.Heading>
+                <HModal.Heading className="text-xl">{title}</HModal.Heading>
               </HModal.Header>
             )}
             <HModal.Body>{children}</HModal.Body>

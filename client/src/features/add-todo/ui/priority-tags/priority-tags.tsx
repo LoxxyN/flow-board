@@ -1,4 +1,4 @@
-import { Label, Tag, TagGroup } from '@heroui/react'
+import { Label, Tag, TagGroup, type Key } from '@heroui/react'
 
 type TagsOption = {
   id: string | number
@@ -11,9 +11,20 @@ const priorityTags: TagsOption[] = [
   { id: 'low', label: 'low' },
 ]
 
-export const PriorityTags = ({ label }: { label: string }) => {
+interface PriorityTagsProps {
+  label: string
+  selectedKeys?: Iterable<Key>
+  onSelectionChange?: (keys: Iterable<Key>) => void
+}
+
+export const PriorityTags = ({ label, selectedKeys, onSelectionChange }: PriorityTagsProps) => {
   return (
-    <TagGroup selectionMode="single" size="lg">
+    <TagGroup
+      onSelectionChange={onSelectionChange}
+      selectedKeys={selectedKeys}
+      selectionMode="single"
+      size="lg"
+    >
       <Label className="mb-1.5">{label}</Label>
       <TagGroup.List>
         {priorityTags.map((tag) => (

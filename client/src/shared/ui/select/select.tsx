@@ -1,15 +1,13 @@
-import { Select as HSelect, Label, ListBox } from '@heroui/react'
-import type { Key } from 'react'
-
+import { Select as HSelect, Label, ListBox, type Key } from '@heroui/react'
 interface SelectOption {
   id: string
   label: string
 }
 
-interface SelectProps {
+interface SelectProps<T> {
   label?: string
   placeholder?: string
-  options: SelectOption[]
+  options: T[]
   value?: Key | Key[] | null
   defaultValue?: Key | Key[] | null
   onChange?: (value: Key | Key[] | null) => void
@@ -21,7 +19,7 @@ interface SelectProps {
   className?: string
 }
 
-export const Select = ({
+export function Select<T extends SelectOption>({
   label,
   placeholder = 'Выберите',
   options,
@@ -34,7 +32,7 @@ export const Select = ({
   isRequired,
   isInvalid,
   className,
-}: SelectProps) => {
+}: SelectProps<T>) {
   return (
     <HSelect
       placeholder={placeholder}
