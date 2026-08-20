@@ -31,8 +31,8 @@ export const TodoColumn = ({ items, todosCount, listTitle }: TodoColumnProps) =>
           <ul className="flex flex-col gap-3">
             <For<ITodo> each={items}>
               {(item) => (
-                <li>
-                  <TodoCard key={item.id} {...item} />
+                <li key={item.id}>
+                  <TodoCard {...item} />
                 </li>
               )}
             </For>
