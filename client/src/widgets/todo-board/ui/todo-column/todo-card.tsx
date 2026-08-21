@@ -10,9 +10,10 @@ interface TodoCardProps {
 export const TodoCard = ({ title, description, priority }: TodoCardProps) => {
   return (
     <Card
+      isVertical
+      variant="secondary"
       title={title}
       description={description}
-      isVertical
       body={
         <div className="flex justify-between">
           <Avatar

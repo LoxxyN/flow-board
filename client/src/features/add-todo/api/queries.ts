@@ -14,7 +14,7 @@ export const useDeleteTask = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: tasksApi.deleteTask,
+    mutationFn: (id: number) => tasksApi.deleteTask(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: TASKS_KEY }),
   })
 }
