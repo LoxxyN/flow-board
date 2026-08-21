@@ -9,7 +9,7 @@ import {
   type Key,
 } from '@heroui/react'
 import { Modal, Select } from '@shared/ui'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { PriorityTags } from '../priority-tags'
 
@@ -33,8 +33,11 @@ const statusOptions: StatusOptions[] = [
 ]
 
 export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
   const [status, setStatus] = useState<StatusOption | null>('todo')
   const [priority, setPriority] = useState<Iterable<Key>>(new Set(['medium']))
+
+  const queryClient = useQueryClient()
 
   const mutation = useMutation({
     mutationFn: (newTodo: NewTodo) => {
@@ -42,6 +45,10 @@ export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode
         method: 'POST',
         body: JSON.stringify(newTodo),
       })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['todos'] })
+      setIsOpen(false)
     },
   })
 
@@ -62,6 +69,8 @@ export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode
 
   return (
     <Modal
+      isOpen={isOpen}
+      onOpenChange={setIsOpen}
       title="Новая задача"
       size="md"
       triggerButton={triggerButton}
@@ -70,13 +79,13 @@ export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode
           <Button variant="outline" slot="close">
             Отмена
           </Button>
-          <Button variant="primary" type="submit" slot="close">
+          <Button form="add_task" isPending={mutation.isPending} type="submit">
             Создать
           </Button>
         </>
       }
     >
-      <Form className="flex flex-col gap-5" onSubmit={onSubmit}>
+      <Form className="flex flex-col gap-5" id="add_task" onSubmit={onSubmit}>
         <TextField isRequired name="title" type="text">
           <Label className="mb-1.5">Название задачи</Label>
           <Input variant="secondary" placeholder="Введите название задачи..." />
@@ -107,8 +116,6 @@ export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode
             selectedKeys={priority}
           />
         </TextField>
-
-        <Button type="submit">Отправить</Button>
       </Form>
     </Modal>
   )

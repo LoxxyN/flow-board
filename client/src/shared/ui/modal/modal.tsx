@@ -2,6 +2,8 @@ import { Modal as HModal } from '@heroui/react'
 import type { ReactNode } from 'react'
 
 interface ModalProps {
+  isOpen?: boolean
+  onOpenChange?: (isOpen: boolean) => void
   triggerButton: ReactNode
   children: ReactNode
   title?: string
@@ -9,9 +11,17 @@ interface ModalProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'cover' | 'full'
 }
 
-export const Modal = ({ triggerButton, title, children, footer, size = 'md' }: ModalProps) => {
+export const Modal = ({
+  triggerButton,
+  title,
+  isOpen,
+  onOpenChange,
+  children,
+  footer,
+  size = 'md',
+}: ModalProps) => {
   return (
-    <HModal>
+    <HModal isOpen={isOpen} onOpenChange={onOpenChange}>
       <HModal.Trigger>{triggerButton}</HModal.Trigger>
       <HModal.Backdrop>
         <HModal.Container size={size}>
