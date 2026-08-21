@@ -1,3 +1,4 @@
+import { useCreateTask } from '@features/add-todo/api'
 import {
   Button,
   FieldError,
@@ -8,22 +9,14 @@ import {
   TextField,
   type Key,
 } from '@heroui/react'
+import type { ITodo, TodoStatus } from '@shared/types'
 import { Modal, Select } from '@shared/ui'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { PriorityTags } from '../priority-tags'
 
-type StatusOption = 'todo' | 'in_progress' | 'done'
 interface StatusOptions {
-  id: StatusOption
+  id: TodoStatus
   label: string
-}
-
-interface NewTodo {
-  title: string
-  description: string
-  status: StatusOption
-  priority: string
 }
 
 const statusOptions: StatusOptions[] = [
@@ -34,37 +27,24 @@ const statusOptions: StatusOptions[] = [
 
 export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [status, setStatus] = useState<StatusOption | null>('todo')
+  const [status, setStatus] = useState<TodoStatus | null>('todo')
   const [priority, setPriority] = useState<Iterable<Key>>(new Set(['medium']))
-
-  const queryClient = useQueryClient()
-
-  const mutation = useMutation({
-    mutationFn: (newTodo: NewTodo) => {
-      return fetch('/api/tasks', {
-        method: 'POST',
-        body: JSON.stringify(newTodo),
-      })
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] })
-      setIsOpen(false)
-    },
-  })
+  const { mutate, isPending, isSuccess } = useCreateTask()
 
   const onSubmit = (e) => {
     e.preventDefault()
     const formData = Object.fromEntries(new FormData(e.currentTarget))
     const settedPriority = [...priority][0]
 
-    const newTodo: NewTodo = {
+    const newTodo: Omit<ITodo, 'id'> = {
       title: formData.title as string,
       description: formData.description as string,
-      priority: (settedPriority ?? 'medium').toString(),
-      status: status ?? 'todo',
+      priority: (settedPriority as ITodo['priority']) ?? 'medium',
+      status: (status as ITodo['status']) ?? 'todo',
     }
 
-    mutation.mutate(newTodo)
+    mutate(newTodo)
+    if (isSuccess) setIsOpen(!isOpen)
   }
 
   return (
@@ -79,7 +59,7 @@ export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode
           <Button variant="outline" slot="close">
             Отмена
           </Button>
-          <Button form="add_task" isPending={mutation.isPending} type="submit">
+          <Button form="add_task" isPending={isPending} type="submit">
             Создать
           </Button>
         </>
@@ -103,7 +83,7 @@ export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode
           <Select<StatusOptions>
             variant="secondary"
             value={status}
-            onChange={(keys) => setStatus(keys as StatusOption)}
+            onChange={(keys) => setStatus(keys as TodoStatus)}
             defaultValue="todo"
             options={statusOptions}
           />

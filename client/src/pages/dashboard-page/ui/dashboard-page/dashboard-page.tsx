@@ -1,18 +1,9 @@
-import { useQuery } from '@tanstack/react-query'
+import { useTasks } from '@shared/api'
 import { TodoBoard } from '@widgets/todo-board'
 import { DashboardHeading } from '../dashboard-heading'
 
-const getData = async () => {
-  const res = await fetch('/api/tasks')
-  const data = await res.json()
-  return data
-}
-
 export const DashboardPage = () => {
-  const { isPending, error, data } = useQuery({
-    queryKey: ['todos'],
-    queryFn: getData,
-  })
+  const { isPending, error, data } = useTasks()
 
   if (isPending) return 'Loading...'
 

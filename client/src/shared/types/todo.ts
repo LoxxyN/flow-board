@@ -1,4 +1,4 @@
-type TodoStatus = 'todo' | 'in_progress' | 'done'
+export type TodoStatus = 'todo' | 'in_progress' | 'done'
 export type TodoPriority = 'low' | 'medium' | 'high'
 
 export interface ITodo {

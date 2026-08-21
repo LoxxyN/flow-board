@@ -1,1 +1,1 @@
-export type { ITodo, TodoPriority } from './todo'
+export type { ITodo, TodoPriority, TodoStatus } from './todo'
