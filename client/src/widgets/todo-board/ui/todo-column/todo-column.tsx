@@ -28,7 +28,7 @@ export const TodoColumn = ({ items, todosCount, listTitle }: TodoColumnProps) =>
       body={
         <>
           <AddTodo triggerButton={<TriggerButton />} />
-          <ul className="flex flex-col gap-3">
+          <ul className="flex flex-col gap-3 mt-3">
             <For<ITodo> each={items}>
               {(item) => (
                 <li key={item.id}>

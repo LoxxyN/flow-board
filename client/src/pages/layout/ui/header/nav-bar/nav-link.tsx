@@ -1,21 +1,16 @@
 import { NavLink } from 'react-router'
 
-export interface INavlink {
-  id: number
+interface INavlink {
   link: string
   title: string
 }
 
-const baseLinkStyle = 'hover:bg-accent-soft rounded px-2'
-const activeLinkStyle = `bg-accent/20 text-white ${baseLinkStyle}`
-const passiveLinkStyle = `text-accent/50 ${baseLinkStyle}`
+const baseClass = 'px-2 rounded-xl transition-colors hover:bg-accent-soft/70'
+const activeClass = 'underline underline-offset-4 decoration-2'
 
 export const Navlink = ({ link, title }: INavlink) => {
   return (
-    <NavLink
-      className={({ isActive }) => (isActive ? activeLinkStyle : passiveLinkStyle)}
-      to={link}
-    >
+    <NavLink to={link} className={({ isActive }) => `${baseClass} ${isActive && activeClass}`}>
       {title}
     </NavLink>
   )
