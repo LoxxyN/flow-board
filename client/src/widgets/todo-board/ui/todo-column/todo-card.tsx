@@ -1,13 +1,17 @@
+import { DeleteTodo } from '@features/delete-todo'
+import { Button } from '@heroui/react'
 import type { TodoPriority } from '@shared/types'
 import { Avatar, Card, Chip } from '@shared/ui'
+import { Trash2 } from 'lucide-react'
 
 interface TodoCardProps {
+  id: number
   title: string
   description: string
   priority: TodoPriority
 }
 
-export const TodoCard = ({ title, description, priority }: TodoCardProps) => {
+export const TodoCard = ({ id, title, description, priority }: TodoCardProps) => {
   return (
     <Card
       isVertical
@@ -20,7 +24,18 @@ export const TodoCard = ({ title, description, priority }: TodoCardProps) => {
             imgSrc="https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/blue.jpg"
             alt="Avatar"
           />
-          <Chip priority={priority} />
+          <div className="flex items-center gap-2">
+            <DeleteTodo
+              id={id}
+              triggerButton={
+                <Button size="sm" isIconOnly variant="danger-soft">
+                  <Trash2 />
+                </Button>
+              }
+            />
+
+            <Chip className="h-full" priority={priority} />
+          </div>
         </div>
       }
     />
