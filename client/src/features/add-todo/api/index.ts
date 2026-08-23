@@ -1,1 +1,1 @@
-export { useCreateTask, useDeleteTask } from './queries'
+export { useCreateTask } from './queries'

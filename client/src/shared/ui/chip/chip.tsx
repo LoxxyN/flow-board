@@ -3,6 +3,8 @@ import type { TodoPriority } from '@shared/types/todo'
 
 interface ChipProps {
   priority: TodoPriority
+  size?: 'sm' | 'md' | 'lg'
+  className?: string
 }
 
 const PRIORITY_CONFIG: Record<
@@ -14,10 +16,10 @@ const PRIORITY_CONFIG: Record<
   high: { color: 'danger', label: 'Высокий' },
 }
 
-export const Chip = ({ priority }: ChipProps) => {
+export const Chip = ({ priority, size = 'md', className }: ChipProps) => {
   const { color, label } = PRIORITY_CONFIG[priority]
   return (
-    <HChip variant="primary" color={color}>
+    <HChip className={className} size={size} variant="primary" color={color}>
       {label}
     </HChip>
   )

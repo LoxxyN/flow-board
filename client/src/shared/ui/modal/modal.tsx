@@ -1,13 +1,12 @@
 import { Modal as HModal } from '@heroui/react'
-import type { ReactNode } from 'react'
 
 interface ModalProps {
   isOpen?: boolean
   onOpenChange?: (isOpen: boolean) => void
-  triggerButton: ReactNode
-  children: ReactNode
+  triggerButton: React.ReactNode
+  children: React.ReactNode
   title?: string
-  footer?: ReactNode
+  footer?: React.ReactNode
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'cover' | 'full'
 }
 
