@@ -3,22 +3,25 @@
 ## Проект
 
 **flow-board** — канбан-доска / трекер задач. Fullstack: клиент (React) + REST API (Hono) + PostgreSQL через Prisma.
-Цель обучения: routing, асинхронные данные (TanStack Query), формы с валидацией (React Hook Form + zod), REST API, ORM/база данных, тесты.
+Цель обучения: routing, асинхронные данные (TanStack Query), формы (HeroUI Form + FormData), валидация zod на сервере, REST API, ORM/база данных, тесты.
 
 ## Стек
 
-| Слой   | Технология                                                                                                             |
-| ------ | ---------------------------------------------------------------------------------------------------------------------- |
-| Клиент | Vite + React 19 + TS, Tailwind CSS v4, React Router v8, TanStack Query, React Hook Form + zod, HeroUI v3, Lucide React |
-| Сервер | Hono + @hono/node-server, zod, CORS, @prisma/adapter-pg (Prisma 7)                                                     |
-| ORM/БД | Prisma 7 + PostgreSQL 17 (localhost:5432)                                                                              |
-| Тесты  | Vitest + jsdom + Testing Library                                                                                       |
+| Слой   | Технология                                                                                      |
+| ------ | ----------------------------------------------------------------------------------------------- |
+| Клиент | Vite + React 19 + TS, Tailwind CSS v4, React Router v8, TanStack Query, HeroUI v3, Lucide React |
+| Сервер | Hono + @hono/node-server, zod, CORS, @prisma/adapter-pg (Prisma 7)                              |
+| ORM/БД | Prisma 7 + PostgreSQL 17 (localhost:5432)                                                       |
+| Тесты  | Vitest + jsdom + Testing Library                                                                |
+
+> Решение по формам: вместо React Hook Form используется HeroUI `Form` + `FormData`.
+> Валидация — zod на сервере (`server/src/validation.ts`).
 
 ## Модель данных
 
 ```ts
 Task {
-  id: string (uuid)
+  id: number
   title: string
   description: string | null
   priority: 'low' | 'medium' | 'high'    // Prisma enum Priority
@@ -35,86 +38,85 @@ flow-board/
   AGENTS.md             <- правила для агента
   TASKS.md              <- этот файл
   server/
-    prisma/schema.prisma
-    prisma/seed.ts
-    prisma.config.ts
-    src/index.ts         <- CORS, /health, /api/tasks
+    prisma/             <- schema, seed, миграции
+    src/index.ts         <- CORS (все роуты), /health, /api/tasks
     src/db.ts            <- PrismaClient + adapter-pg
     src/validation.ts    <- zod-схемы
     src/routes/tasks.ts  <- CRUD /api/tasks
-    .env                 <- DATABASE_URL, PORT=3002
+    .env                 <- DATABASE_URL, PORT
   client/
-    src/app/             <- main, AppRouter, globals
-    src/pages/           <- layout, dashboard, not-found
-    src/shared/          <- UI-компоненты (avatar и т.д.)
-    index.html
+    src/app/             <- main (QueryClientProvider + devtools), AppRouter
+    src/pages/           <- layout (header/sidebar), dashboard-page, not-found
+    src/widgets/         <- todo-board (колонки, карточки)
+    src/features/        <- add-todo, delete-todo (api + ui)
+    src/shared/
+      api/               <- api-client (fetch-обёртка), tasks, use-tasks
+      lib/               <- For
+      types/             <- ITodo
+      ui/                <- avatar, card, chip, modal, select, alert-dialog
+    vite.config.ts       <- proxy /api -> localhost:3001
+  index.html
 ```
 
 ## Текущее состояние
 
-- [x] Сервер: Hono + Prisma 7, CRUD /api/tasks, .env, seed
-- [x] БД: подключение к Postgres, миграция, seed (4 задачи)
+- [x] Сервер: Hono + Prisma 7, CRUD `/api/tasks`, CORS на все роуты, seed
+- [x] БД: подключение к Postgres, миграция, seed
 - [x] Клиент: Vite-скаффолд, Tailwind v4, HeroUI v3, react-router v8
-- [x] Layout: header (навигация), sidebar (заглушка)
-- [x] Роуты: `/` (доска), `/projects`, `/command`, `/settings` (заглушки), `*` (404)
-- [ ] Недостающие пакеты: @tanstack/react-query, react-hook-form, zod, @hookform/resolvers, vitest, jsdom, @testing-library/\*
-- [ ] API-модуль (fetch-функции для CRUD)
-- [ ] Провайдеры: QueryClientProvider
-- [ ] Доска: 3 колонки с карточками
-- [ ] Модалки: создание / редактирование задачи
+- [x] Layout: grid (header + sidebar + main, `100vh`, overflow внутри зон)
+- [x] Роуты: `/` (доска), `/projects`, `/command`, `*` (404)
+- [x] TanStack Query: QueryClientProvider + Devtools + eslint-plugin-query
+- [x] API-слой: `api-client.ts` (fetch-обёртка: JSON, ошибки HTTP, hidden-input совместимость), `tasks.ts`, `use-tasks.ts` (TASKS_KEY)
+- [x] Vite proxy `/api` -> `localhost:3001` (без CORS-боли)
+- [x] Доска: 3 колонки, карточки (title, description, avatar, priority chip), счётчики в колонках
+- [x] Создание задачи: `AddTodoModal` (HeroUI Form + FormData, Select + PriorityTags как контролируемые компоненты с hidden-input), закрытие по onSuccess
+- [x] Удаление задачи: `DeleteTodoDialog` + `AlertDialog` (подтверждение), `useDeleteTask` + инвалидация
+- [x] Мутации-хуки с инвалидацией: `useCreateTask`, `useDeleteTask` (в `features/*/api/queries.ts`)
+- [x] Sidebar: PriorityCountList (кол-во задач по приоритетам)
+- [x] Header: Navlink (активное состояние), ThemeSwitch (HeroUI useTheme), UserAvatar
+- [x] Shared UI: Avatar, Card (слоты headerRight/body/footer, isVertical), Chip (по приоритету), Modal (controlled isOpen/onOpenChange), Select (generic), AlertDialog, For
+- [x] Тёмная тема: переключение через HeroUI `useTheme` (data-theme)
 
-## Роуты (по макету)
+## Роуты
 
-| URL         | Страница  | Описание                                                   |
-| ----------- | --------- | ---------------------------------------------------------- |
-| `/`         | Доска     | 3 колонки (todo / in_progress / done), sidebar с фильтрами |
-| `/projects` | Проекты   | Заглушка (потом)                                           |
-| `/command`  | Команда   | Заглушка (потом)                                           |
-| `/settings` | Настройки | Заглушка (потом)                                           |
-| `*`         | 404       | Страница не найдена                                        |
+| URL         | Страница | Описание                                                      |
+| ----------- | -------- | ------------------------------------------------------------- |
+| `/`         | Доска    | 3 колонки (todo / in_progress / done), sidebar с приоритетами |
+| `/projects` | Проекты  | Заглушка (потом)                                              |
+| `/command`  | Команда  | Заглушка (потом)                                              |
+| `*`         | 404      | Страница не найдена                                           |
 
 **Создание/редактирование задачи — модалки** (не отдельные роуты), открываются из доски.
 
-## План работ (по порядку)
+## План работ (актуальный)
 
-### Этап 2 — Клиент: каркас (продолжение)
+### Ближайшие задачи
 
-- [ ] Установить: @tanstack/react-query, react-hook-form, @hookform/resolvers, zod
-- [ ] API-модуль: `client/src/shared/api/tasks.ts` — 5 функций (getTasks, getTask, createTask, updateTask, deleteTask)
-- [ ] Провайдеры: QueryClientProvider в main.tsx
-- [ ] Базовый URL API: вынести `http://localhost:3002` в константу
+- [ ] Редактирование задачи: переиспользовать модалку (режим create/edit, предзаполнение), `useUpdateTask` + PATCH
+- [ ] Оптимистичный апдейт для смены статуса (onMutate/onError/onSettled)
+- [ ] DnD: @dnd-kit/core — DndContext на TodoBoard, useDraggable на карточке, useDroppable на колонке, onDragEnd -> PATCH status
+- [ ] Фильтры: FilterButton уже есть — Popover + TagGroup по приоритетам, фильтрация массива `data` перед TodoBoard, бейдж с кол-вом активных фильтров
+
+### Тесты (Этап 5)
+
 - [ ] Установить (dev): vitest, jsdom, @testing-library/react, @testing-library/jest-dom, @testing-library/user-event
-
-### Этап 3 — Клиент: доска и данные
-
-- [ ] `useQuery` для списка задач (loading / error / retry)
-- [ ] `useQuery` для одной задачи
-- [ ] `useMutation` + `invalidateQueries`: create / update / delete
-- [ ] Доска: 3 колонки (todo / in_progress / done), карточки, счётчики
-- [ ] Sidebar: фильтры (Все задачи, Мои задачи, Проекты, Приоритеты)
-
-### Этап 4 — Модалки и формы
-
-- [ ] Модалка создания задачи: title (мин. 4 символа), description, priority, status — RHF + zod
-- [ ] Модалка редактирования с предзаполнением
-- [ ] Ошибки под полями, сброс формы после сабмита
-
-### Этап 5 — Тесты
-
-- [ ] Zod-схема формы: валид / невалид
+- [ ] Zod-схемы сервера: валид / невалид
 - [ ] Форма создания: вывод ошибок, сабмит
 - [ ] Рендер колонки/карточки
 - [ ] Мутация (create) через useMutation
 
 ## Стоп-критерии
 
-- [ ] CRUD работает через UI: создал (модалка) → увидел (доска) → переместил → отредактировал (модалка) → удалил
-- [ ] Данные переживают перезапуск (реально в PostgreSQL)
+- [x] Данные переживают перезапуск (реально в PostgreSQL)
+- [x] Создал (модалка) -> увидел (доска) без перезагрузки (инвалидация кэша)
+- [ ] Переместил -> отредактировал (модалка) -> удалил — полный цикл через UI
 - [ ] `npm run build`, `npm run lint`, `npm test` — зелёные
 
 ## Стреч-опции (не обязательны)
 
-- [ ] Drag & drop через @dnd-kit
-- [ ] Фильтр/сортировка задач
-- [ ] Dark mode
-- [ ] Разделы: Проекты, Команда, Настройки
+- [x] Dark mode (через HeroUI useTheme)
+- [ ] Фильтры в URL search params (`?priority=high`) — шареные ссылки
+- [ ] Drag & drop через @dnd-kit (см. Ближайшие задачи)
+- [ ] Сортировка внутри колонки (нужно поле order в модели + миграция)
+- [ ] Разделы: Проекты, Команда
+- [ ] Персистенция кэша React Query в localStorage
