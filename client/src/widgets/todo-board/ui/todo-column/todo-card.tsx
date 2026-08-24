@@ -3,6 +3,7 @@ import { Button } from '@heroui/react'
 import type { TodoPriority } from '@shared/types'
 import { Avatar, Card, Chip } from '@shared/ui'
 import { Trash2 } from 'lucide-react'
+import { DeleteButtonTooltip } from '../delete-button-tooltip'
 
 interface TodoCardProps {
   id: number
@@ -28,9 +29,11 @@ export const TodoCard = ({ id, title, description, priority }: TodoCardProps) =>
             <DeleteTodo
               id={id}
               triggerButton={
-                <Button size="sm" isIconOnly variant="danger-soft">
-                  <Trash2 />
-                </Button>
+                <DeleteButtonTooltip label="Удалить">
+                  <Button size="sm" isIconOnly variant="danger-soft">
+                    <Trash2 />
+                  </Button>
+                </DeleteButtonTooltip>
               }
             />
 
