@@ -1,60 +1,12 @@
-import { DeleteTodo } from '@features/delete-todo'
-import { EditTodo } from '@features/edit-todo'
-import { Button } from '@heroui/react'
-import type { TodoPriority } from '@shared/types'
-import { Avatar, Card, Chip, Tooltip } from '@shared/ui'
-import { Pencil, Trash2 } from 'lucide-react'
-
-interface TodoCardProps {
-  id: number
-  title: string
-  description: string
-  priority: TodoPriority
-}
+import { useDraggable } from '@dnd-kit/react'
+import { TodoCardView, type TodoCardProps } from './todo-card-view'
 
 export const TodoCard = ({ id, title, description, priority }: TodoCardProps) => {
+  const { ref, isDragging } = useDraggable({ id })
+
   return (
-    <Card
-      isVertical
-      variant="secondary"
-      title={title}
-      description={description}
-      body={
-        <div className="flex justify-between">
-          <Avatar
-            imgSrc="https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/blue.jpg"
-            alt="Avatar"
-          />
-          <div className="flex items-center gap-2">
-            <EditTodo
-              id={id}
-              title={title}
-              description={description}
-              priority={priority}
-              triggerButton={
-                <Tooltip label="Редактировать">
-                  <Button size="sm" isIconOnly variant="secondary">
-                    <Pencil />
-                  </Button>
-                </Tooltip>
-              }
-            />
-
-            <DeleteTodo
-              id={id}
-              triggerButton={
-                <Tooltip label="Удалить">
-                  <Button size="sm" isIconOnly variant="danger-soft">
-                    <Trash2 />
-                  </Button>
-                </Tooltip>
-              }
-            />
-
-            <Chip className="h-full" priority={priority} />
-          </div>
-        </div>
-      }
-    />
+    <div ref={ref} style={isDragging ? { opacity: 0.4 } : undefined}>
+      <TodoCardView id={id} title={title} description={description} priority={priority} />
+    </div>
   )
 }
