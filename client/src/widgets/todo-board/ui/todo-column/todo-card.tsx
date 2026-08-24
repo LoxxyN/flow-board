@@ -1,9 +1,9 @@
 import { DeleteTodo } from '@features/delete-todo'
+import { EditTodo } from '@features/edit-todo'
 import { Button } from '@heroui/react'
 import type { TodoPriority } from '@shared/types'
-import { Avatar, Card, Chip } from '@shared/ui'
-import { Trash2 } from 'lucide-react'
-import { DeleteButtonTooltip } from '../delete-button-tooltip'
+import { Avatar, Card, Chip, Tooltip } from '@shared/ui'
+import { Pencil, Trash2 } from 'lucide-react'
 
 interface TodoCardProps {
   id: number
@@ -26,14 +26,28 @@ export const TodoCard = ({ id, title, description, priority }: TodoCardProps) =>
             alt="Avatar"
           />
           <div className="flex items-center gap-2">
+            <EditTodo
+              id={id}
+              title={title}
+              description={description}
+              priority={priority}
+              triggerButton={
+                <Tooltip label="Редактировать">
+                  <Button size="sm" isIconOnly variant="secondary">
+                    <Pencil />
+                  </Button>
+                </Tooltip>
+              }
+            />
+
             <DeleteTodo
               id={id}
               triggerButton={
-                <DeleteButtonTooltip label="Удалить">
+                <Tooltip label="Удалить">
                   <Button size="sm" isIconOnly variant="danger-soft">
                     <Trash2 />
                   </Button>
-                </DeleteButtonTooltip>
+                </Tooltip>
               }
             />
 

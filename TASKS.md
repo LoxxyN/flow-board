@@ -92,7 +92,8 @@ flow-board/
 
 ### Ближайшие задачи
 
-- [ ] Редактирование задачи: переиспользовать модалку (режим create/edit, предзаполнение), `useUpdateTask` + PATCH
+- [x] Редактирование задачи: фича `edit-todo` (модалка с предзаполнением, без select статуса), `useUpdateTask` + PATCH, триггер Pencil + Tooltip
+- [x] Tooltip вынесен в `shared/ui` (бывш. DeleteButtonTooltip), PriorityTags перенесён в `shared/ui` (переиспользование add/edit)
 - [ ] Оптимистичный апдейт для смены статуса (onMutate/onError/onSettled)
 - [ ] DnD: @dnd-kit/core — DndContext на TodoBoard, useDraggable на карточке, useDroppable на колонке, onDragEnd -> PATCH status
 - [ ] Фильтры: FilterButton уже есть — Popover + TagGroup по приоритетам, фильтрация массива `data` перед TodoBoard, бейдж с кол-вом активных фильтров

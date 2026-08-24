@@ -10,9 +10,8 @@ import {
   type Key,
 } from '@heroui/react'
 import type { ITodo, TodoStatus } from '@shared/types'
-import { Modal, Select } from '@shared/ui'
+import { Modal, PriorityTags, Select } from '@shared/ui'
 import { useState } from 'react'
-import { PriorityTags } from '../priority-tags'
 
 interface StatusOptions {
   id: TodoStatus
@@ -31,7 +30,7 @@ export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode
   const [priority, setPriority] = useState<Iterable<Key>>(new Set(['medium']))
   const { mutate, isPending, isSuccess } = useCreateTask()
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = Object.fromEntries(new FormData(e.currentTarget))
     const settedPriority = [...priority][0]
