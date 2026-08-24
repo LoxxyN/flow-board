@@ -28,7 +28,7 @@ export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [status, setStatus] = useState<TodoStatus | null>('todo')
   const [priority, setPriority] = useState<Iterable<Key>>(new Set(['medium']))
-  const { mutate, isPending, isSuccess } = useCreateTask()
+  const { mutate, isPending } = useCreateTask()
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -42,8 +42,7 @@ export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode
       status: (status as ITodo['status']) ?? 'todo',
     }
 
-    mutate(newTodo)
-    if (isSuccess) setIsOpen(!isOpen)
+    mutate(newTodo, { onSuccess: () => setIsOpen(!isOpen) })
   }
 
   return (

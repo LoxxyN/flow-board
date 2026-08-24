@@ -11,9 +11,11 @@ export const DeleteTodoDialog = ({
   triggerButton: React.ReactNode
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const { mutate, isPending, isSuccess } = useDeleteTask()
+  const { mutate, isPending } = useDeleteTask()
 
-  if (isSuccess) setIsOpen(!isOpen)
+  const handleDeleteTask = () => {
+    mutate(id, { onSuccess: () => setIsOpen(!isOpen) })
+  }
 
   return (
     <AlertDialog
@@ -24,7 +26,7 @@ export const DeleteTodoDialog = ({
       footer={
         <>
           <Button slot="close">Отмена</Button>
-          <Button onClick={() => mutate(id)} isPending={isPending} variant="danger">
+          <Button onClick={handleDeleteTask} isPending={isPending} variant="danger">
             Удалить
           </Button>
         </>
