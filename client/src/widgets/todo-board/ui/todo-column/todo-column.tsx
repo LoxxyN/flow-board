@@ -39,11 +39,7 @@ export const TodoColumn = ({ items, todosCount, listTitle, status }: TodoColumnP
             }`}
           >
             <For<ITodo> each={items}>
-              {(item) => (
-                <li key={item.id}>
-                  <TodoCard {...item} />
-                </li>
-              )}
+              {(item, index) => <TodoCard key={item.id} {...item} index={index} group={status} />}
             </For>
           </ul>
         </>

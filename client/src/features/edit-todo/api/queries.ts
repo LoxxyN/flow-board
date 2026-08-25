@@ -12,6 +12,25 @@ export const useUpdateTask = () => {
 
   return useMutation({
     mutationFn: ({ id, patch }: UpdateTaskVariables) => tasksApi.updateTask(id, patch),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: TASKS_KEY }),
+
+    onMutate: async ({ id, patch }) => {
+      await queryClient.cancelQueries({ queryKey: TASKS_KEY })
+
+      const prevTodos = queryClient.getQueryData<ITodo[]>(TASKS_KEY)
+
+      queryClient.setQueryData<ITodo[]>(TASKS_KEY, (oldTodos) =>
+        oldTodos?.map((todo) => (todo.id === id ? { ...todo, ...patch } : todo)),
+      )
+
+      return { prevTodos }
+    },
+
+    onError: (_err, _payload, ctx) => {
+      if (ctx?.prevTodos) {
+        queryClient.setQueryData(TASKS_KEY, ctx.prevTodos)
+      }
+    },
+
+    onSettled: () => queryClient.invalidateQueries({ queryKey: TASKS_KEY }),
   })
 }
