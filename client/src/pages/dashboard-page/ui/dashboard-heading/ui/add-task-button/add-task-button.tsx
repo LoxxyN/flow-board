@@ -8,7 +8,8 @@ export const AddTaskButton = () => {
       <AddTodo
         triggerButton={
           <Button>
-            <Plus /> Создать задачу
+            <Plus />
+            <span>Создать задачу</span>
           </Button>
         }
       />

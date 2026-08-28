@@ -1,2 +1,1 @@
-export { For } from './for'
 export { PriorityContextProvider, usePriorityContext } from './priority-context'

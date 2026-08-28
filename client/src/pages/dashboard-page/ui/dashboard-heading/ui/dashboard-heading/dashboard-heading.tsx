@@ -1,5 +1,5 @@
-import { AddTaskButton } from './add-task-button'
-import { FilterButton } from './filter-button'
+import { AddTaskButton } from '../add-task-button'
+import { FilterButton } from '../filter-button'
 
 export const DashboardHeading = ({ title }: { title: string }) => {
   return (

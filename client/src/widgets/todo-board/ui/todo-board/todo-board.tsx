@@ -2,6 +2,7 @@ import type { DragEndEvent } from '@dnd-kit/react'
 import { DragDropProvider, DragOverlay } from '@dnd-kit/react'
 import { useUpdateTask } from '@features/edit-todo/api'
 import { TASKS_KEY } from '@shared/api'
+import { usePriorityContext } from '@shared/lib'
 import type { ITodo, TodoStatus } from '@shared/types'
 import { useQueryClient } from '@tanstack/react-query'
 import { useCallback } from 'react'
@@ -19,6 +20,7 @@ const isTodoStatus = (value: unknown): value is TodoStatus =>
 
 export const TodoBoard = ({ todos }: { todos: ITodo[] }) => {
   const { mutate } = useUpdateTask()
+  const { priority } = usePriorityContext()
   const queryClient = useQueryClient()
 
   const handleDragEnd = useCallback(
@@ -88,7 +90,10 @@ export const TodoBoard = ({ todos }: { todos: ITodo[] }) => {
     <DragDropProvider onDragEnd={handleDragEnd}>
       <div className="grid grid-cols-3 gap-x-5">
         {COLUMNS.map(({ status, title }) => {
-          const items = todos.filter((t) => t.status === status)
+          const items = todos
+            .filter((task) => task.status === status)
+            .filter((task) => priority === 'none' || task.priority === priority)
+
           return (
             <TodoColumn
               key={status}

@@ -14,7 +14,6 @@
 | ORM/БД | Prisma 7 + PostgreSQL 17 (localhost:5432)                                                       |
 | Тесты  | Vitest + jsdom + Testing Library                                                                |
 
-> Решение по формам: вместо React Hook Form используется HeroUI `Form` + `FormData`.
 > Валидация — zod на сервере (`server/src/validation.ts`).
 
 ## Модель данных
@@ -24,8 +23,8 @@ Task {
   id: number
   title: string
   description: string | null
-  priority: 'low' | 'medium' | 'high'    // Prisma enum Priority
-  status: 'todo' | 'in_progress' | 'done' // Prisma enum Status
+  priority: 'low' | 'medium' | 'high'
+  status: 'todo' | 'in_progress' | 'done'
   createdAt: datetime
   updatedAt: datetime
 }
@@ -94,8 +93,8 @@ flow-board/
 
 - [x] Редактирование задачи: фича `edit-todo` (модалка с предзаполнением, без select статуса), `useUpdateTask` + PATCH, триггер Pencil + Tooltip
 - [x] Tooltip вынесен в `shared/ui` (бывш. DeleteButtonTooltip), PriorityTags перенесён в `shared/ui` (переиспользование add/edit)
-- [ ] Оптимистичный апдейт для смены статуса (onMutate/onError/onSettled)
-- [ ] DnD: @dnd-kit/core — DndContext на TodoBoard, useDraggable на карточке, useDroppable на колонке, onDragEnd -> PATCH status
+- [х] Оптимистичный апдейт для смены статуса (onMutate/onError/onSettled)
+- [х] DnD: @dnd-kit/core — DndContext на TodoBoard, useDraggable на карточке, useDroppable на колонке, onDragEnd -> PATCH status
 - [ ] Фильтры: FilterButton уже есть — Popover + TagGroup по приоритетам, фильтрация массива `data` перед TodoBoard, бейдж с кол-вом активных фильтров
 
 ### Тесты (Этап 5)
@@ -117,7 +116,5 @@ flow-board/
 
 - [x] Dark mode (через HeroUI useTheme)
 - [ ] Фильтры в URL search params (`?priority=high`) — шареные ссылки
-- [ ] Drag & drop через @dnd-kit (см. Ближайшие задачи)
-- [ ] Сортировка внутри колонки (нужно поле order в модели + миграция)
+- [х] Drag & drop через @dnd-kit
 - [ ] Разделы: Проекты, Команда
-- [ ] Персистенция кэша React Query в localStorage
