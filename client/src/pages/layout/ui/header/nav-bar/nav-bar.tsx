@@ -1,3 +1,4 @@
+import { For } from '@shared/lib'
 import { Navlink } from './nav-link'
 
 const LINKS = [
@@ -9,9 +10,9 @@ const LINKS = [
 export const Navbar = () => {
   return (
     <nav className="w-1/5 flex justify-between items-center">
-      {LINKS.map(({ link, title }) => (
-        <Navlink key={link} link={link} title={title} />
-      ))}
+      <For each={LINKS}>
+        {({ link, title }) => <Navlink key={link} link={link} title={title} />}
+      </For>
     </nav>
   )
 }

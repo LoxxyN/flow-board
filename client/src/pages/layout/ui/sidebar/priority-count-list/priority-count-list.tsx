@@ -1,5 +1,6 @@
 import { Label } from '@heroui/react'
 import { useTasks } from '@shared/api'
+import { For } from '@shared/lib'
 import type { TodoPriority } from '@shared/types'
 import { PriorityCountItem } from './priority-count-item'
 
@@ -27,11 +28,13 @@ export const PriorityCountList = () => {
     <div className="w-full">
       <Label className="text-muted mb-3">Приоритеты</Label>
       <ul className="pl-4">
-        {items.map((item) => (
-          <li key={item.priority}>
-            <PriorityCountItem label={item.label} priority={item.priority} count={item.count} />
-          </li>
-        ))}
+        <For each={items}>
+          {(item) => (
+            <li key={item.priority}>
+              <PriorityCountItem label={item.label} priority={item.priority} count={item.count} />
+            </li>
+          )}
+        </For>
       </ul>
     </div>
   )

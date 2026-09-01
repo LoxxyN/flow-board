@@ -13,7 +13,6 @@ export const PriorityContextProvider: React.FC<{ children: React.ReactNode }> = 
   const [priorityValue, setPriorityValue] = useState<Iterable<Key>>(new Set(['none']))
 
   const priority = [...priorityValue][0] as TodoPriority
-  console.log(priority)
 
   return (
     <PriorityContext.Provider value={{ priority, setPriorityValue }}>

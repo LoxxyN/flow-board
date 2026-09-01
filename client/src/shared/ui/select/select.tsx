@@ -1,4 +1,5 @@
 import { Select as HSelect, Label, ListBox, type Key } from '@heroui/react'
+import { For } from '@shared/lib'
 interface SelectOption {
   id: string
   label: string
@@ -53,12 +54,14 @@ export function Select<T extends SelectOption>({
       </HSelect.Trigger>
       <HSelect.Popover>
         <ListBox>
-          {options.map((option) => (
-            <ListBox.Item key={option.id} id={option.id} textValue={option.label}>
-              {option.label}
-              <ListBox.ItemIndicator />
-            </ListBox.Item>
-          ))}
+          <For each={options}>
+            {({ id, label }) => (
+              <ListBox.Item key={id} id={id} textValue={label}>
+                {label}
+                <ListBox.ItemIndicator />
+              </ListBox.Item>
+            )}
+          </For>
         </ListBox>
       </HSelect.Popover>
     </HSelect>

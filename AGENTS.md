@@ -27,5 +27,5 @@ The user is learning to code (kanban board flow-board). ~1 year commercial exper
 
 - Fullstack: client (React + Vite + Tailwind + HeroUI) + server (Hono + zod + Prisma 7) + PostgreSQL 17.
 - Task model: id (uuid), title, description|null, priority (low|medium|high), status (todo|in_progress|done), createdAt, updatedAt.
-- API on port 3002, Postgres on 5432, Vite on 5173.
+- API on port 3000, Postgres on 5432, Vite on 5173.
 - Task list and state — in TASKS.md, keep it up to date.
