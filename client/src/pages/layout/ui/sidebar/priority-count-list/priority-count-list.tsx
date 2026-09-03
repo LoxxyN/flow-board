@@ -11,7 +11,7 @@ interface PriorityCount {
 }
 
 export const PriorityCountList = () => {
-  const { data } = useTasks()
+  const { data, isPending } = useTasks()
   const tasks = data ?? []
 
   const high = tasks.filter((task) => task.priority === 'high').length
@@ -31,7 +31,12 @@ export const PriorityCountList = () => {
         <For each={items}>
           {(item) => (
             <li key={item.priority}>
-              <PriorityCountItem label={item.label} priority={item.priority} count={item.count} />
+              <PriorityCountItem
+                isPending={isPending}
+                label={item.label}
+                priority={item.priority}
+                count={item.count}
+              />
             </li>
           )}
         </For>

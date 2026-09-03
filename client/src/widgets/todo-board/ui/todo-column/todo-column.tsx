@@ -38,7 +38,14 @@ export const TodoColumn = ({ items, todosCount, listTitle, status }: TodoColumnP
               isDropTarget ? 'ring-2 ring-accent/50 bg-accent/5' : ''
             }`}
           >
-            <For<ITodo> each={items}>
+            <For<ITodo>
+              each={items}
+              empty={
+                <div className="w-full h-full flex items-center justify-center">
+                  <h2 className="font-medium text-lg">Задачи отсутствуют</h2>
+                </div>
+              }
+            >
               {(item, index) => <TodoCard key={item.id} {...item} index={index} group={status} />}
             </For>
           </ul>
