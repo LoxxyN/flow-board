@@ -7,7 +7,7 @@ interface ForProps<T> {
 }
 
 export const For = <T,>({ each, empty, children }: ForProps<T>) => {
-  if (each.length === 0 || !each) return empty
+  if (!each || each.length === 0) return empty
 
   return <>{each.map(children)}</>
 }

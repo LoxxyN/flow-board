@@ -29,8 +29,8 @@ export const useUpdateTask = () => {
       if (ctx?.prevTodos) {
         queryClient.setQueryData(TASKS_KEY, ctx.prevTodos)
       }
-    },
 
-    onSettled: () => queryClient.invalidateQueries({ queryKey: TASKS_KEY }),
+      queryClient.invalidateQueries({ queryKey: TASKS_KEY })
+    },
   })
 }

@@ -12,7 +12,6 @@ const colorMap: Record<TodoPriority, string> = {
   high: 'bg-danger',
   medium: 'bg-warning',
   low: 'bg-success',
-  none: '',
 }
 
 export const PriorityCountItem = ({ label, count, priority, isPending }: PriorityCountItem) => {

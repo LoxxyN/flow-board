@@ -19,9 +19,9 @@ const isTodoStatus = (value: unknown): value is TodoStatus =>
   value === 'todo' || value === 'in_progress' || value === 'done'
 
 export const TodoBoard = ({ todos }: { todos: ITodo[] }) => {
-  const { mutate } = useUpdateTask()
-  const { priority } = usePriorityContext()
   const queryClient = useQueryClient()
+  const { priorityValue, hasFilter } = usePriorityContext()
+  const { mutate } = useUpdateTask()
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
@@ -92,7 +92,7 @@ export const TodoBoard = ({ todos }: { todos: ITodo[] }) => {
         {COLUMNS.map(({ status, title }) => {
           const items = todos
             .filter((task) => task.status === status)
-            .filter((task) => priority === 'none' || task.priority === priority)
+            .filter((task) => !hasFilter || priorityValue.has(task.priority))
 
           return (
             <TodoColumn

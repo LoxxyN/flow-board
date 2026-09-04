@@ -1,21 +1,20 @@
-import type { Key } from '@heroui/react'
 import type { TodoPriority } from '@shared/types'
 import { createContext, useContext, useState } from 'react'
 
 interface PriorityContext {
-  priority: TodoPriority | string
-  setPriorityValue: (priority: Iterable<Key>) => void
+  hasFilter: boolean
+  priorityValue: Set<TodoPriority>
+  setPriorityValue: (priority: Set<TodoPriority>) => void
 }
 
 const PriorityContext = createContext<PriorityContext | null>(null)
 
 export const PriorityContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [priorityValue, setPriorityValue] = useState<Iterable<Key>>(new Set(['none']))
-
-  const priority = [...priorityValue][0] as TodoPriority
+  const [priorityValue, setPriorityValue] = useState<Set<TodoPriority>>(new Set())
+  const hasFilter = priorityValue.size > 0
 
   return (
-    <PriorityContext.Provider value={{ priority, setPriorityValue }}>
+    <PriorityContext.Provider value={{ hasFilter, priorityValue, setPriorityValue }}>
       {children}
     </PriorityContext.Provider>
   )

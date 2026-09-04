@@ -1,14 +1,24 @@
-import { Button } from '@heroui/react'
+import { Button, type Key } from '@heroui/react'
 import { usePriorityContext } from '@shared/lib'
+import type { TodoPriority } from '@shared/types'
 import { PriorityTags } from '@shared/ui'
 import { Funnel } from 'lucide-react'
 import { Popover } from '../popover'
 
 export const FilterButton = () => {
-  const { setPriorityValue, priority } = usePriorityContext()
+  const { setPriorityValue, priorityValue } = usePriorityContext()
 
   const resetFilter = () => {
-    setPriorityValue(['none'])
+    setPriorityValue(new Set([]))
+  }
+
+  const handleSelect = (keys: Iterable<Key>) => {
+    const set = new Set<TodoPriority>()
+    for (const key of keys) {
+      if (key === 'high' || key === 'medium' || key === 'low') set.add(key)
+    }
+
+    setPriorityValue(set)
   }
 
   return (
@@ -23,8 +33,8 @@ export const FilterButton = () => {
       >
         <div className="flex flex-col gap-4">
           <PriorityTags
-            selectedKeys={priority}
-            onSelectionChange={setPriorityValue}
+            selectedKeys={priorityValue}
+            onSelectionChange={handleSelect}
             label="Приоритеты"
           />
 

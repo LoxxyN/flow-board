@@ -9,9 +9,8 @@ interface ChipProps {
 
 const PRIORITY_CONFIG: Record<
   TodoPriority,
-  { color: 'default' | 'success' | 'danger' | 'warning'; label: string }
+  { color: 'success' | 'danger' | 'warning'; label: string }
 > = {
-  none: { color: 'default', label: '' },
   low: { color: 'success', label: 'Низкий' },
   medium: { color: 'warning', label: 'Средний' },
   high: { color: 'danger', label: 'Высокий' },
