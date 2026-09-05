@@ -95,22 +95,22 @@ flow-board/
 - [x] Tooltip вынесен в `shared/ui` (бывш. DeleteButtonTooltip), PriorityTags перенесён в `shared/ui` (переиспользование add/edit)
 - [х] Оптимистичный апдейт для смены статуса (onMutate/onError/onSettled)
 - [х] DnD: @dnd-kit/core — DndContext на TodoBoard, useDraggable на карточке, useDroppable на колонке, onDragEnd -> PATCH status
-- [ ] Фильтры: FilterButton уже есть — Popover + TagGroup по приоритетам, фильтрация массива `data` перед TodoBoard, бейдж с кол-вом активных фильтров
+- [x] Фильтры: FilterButton уже есть — Popover + TagGroup по приоритетам, фильтрация массива `data` перед TodoBoard, бейдж с кол-вом активных фильтров
 
 ### Тесты (Этап 5)
 
-- [ ] Установить (dev): vitest, jsdom, @testing-library/react, @testing-library/jest-dom, @testing-library/user-event
-- [ ] Zod-схемы сервера: валид / невалид
-- [ ] Форма создания: вывод ошибок, сабмит
-- [ ] Рендер колонки/карточки
-- [ ] Мутация (create) через useMutation
+- [x] Установить (dev): vitest, jsdom, @testing-library/react, @testing-library/jest-dom, @testing-library/user-event
+- [x] Zod-схемы сервера: валид / невалид
+- [x] Форма создания: вывод ошибок, сабмит
+- [x] Рендер колонки/карточки
+- [x] Мутация (create) через useMutation
 
 ## Стоп-критерии
 
 - [x] Данные переживают перезапуск (реально в PostgreSQL)
 - [x] Создал (модалка) -> увидел (доска) без перезагрузки (инвалидация кэша)
-- [ ] Переместил -> отредактировал (модалка) -> удалил — полный цикл через UI
-- [ ] `npm run build`, `npm run lint`, `npm test` — зелёные
+- [x] Переместил -> отредактировал (модалка) -> удалил — полный цикл через UI
+- [x] `npm run build`, `npm run lint`, `npm test` — зелёные
 
 ## Стреч-опции (не обязательны)
 
