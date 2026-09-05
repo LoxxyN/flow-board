@@ -14,7 +14,7 @@ export const DeleteTodoDialog = ({
   const { mutate, isPending } = useDeleteTask()
 
   const handleDeleteTask = () => {
-    mutate(id, { onSuccess: () => setIsOpen(!isOpen) })
+    mutate(id, { onSuccess: () => setIsOpen(false) })
   }
 
   return (

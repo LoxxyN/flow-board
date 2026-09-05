@@ -42,7 +42,7 @@ export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode
       status: (status as ITodo['status']) ?? 'todo',
     }
 
-    mutate(newTodo, { onSuccess: () => setIsOpen(!isOpen) })
+    mutate(newTodo, { onSuccess: () => setIsOpen(false) })
   }
 
   return (
@@ -87,13 +87,11 @@ export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode
           />
         </TextField>
 
-        <TextField name="priority">
-          <PriorityTags
-            label="Приоритет"
-            onSelectionChange={(e) => setPriority(e)}
-            selectedKeys={priority}
-          />
-        </TextField>
+        <PriorityTags
+          label="Приоритет"
+          onSelectionChange={(e) => setPriority(e)}
+          selectedKeys={priority}
+        />
       </Form>
     </Modal>
   )

@@ -5,7 +5,6 @@ const tasksEndpoint = 'tasks'
 
 export const tasksApi = {
   getTasks: (signal?: AbortSignal) => apiClient<ITodo[]>(tasksEndpoint, { signal }),
-  getTaskById: (id: number) => apiClient<ITodo>(`${tasksEndpoint}/${id}`),
 
   createTask: (newTodo: Omit<ITodo, 'id'>) =>
     apiClient<ITodo>(tasksEndpoint, {
