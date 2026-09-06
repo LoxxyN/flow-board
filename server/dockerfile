@@ -1,12 +1,13 @@
 # Build
 FROM node:26-slim AS builder
-
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json package-lock.json ./
+COPY server/package.json ./server/
 RUN npm ci
 
-COPY . .
+COPY server ./server
+WORKDIR /app/server
 
 RUN DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" npx prisma generate
 RUN npm run build
@@ -15,14 +16,12 @@ RUN npm run build
 FROM node:26-slim AS production
 
 WORKDIR /app
+COPY package.json package-lock.json ./
+COPY server/package.json ./server/
 
-COPY package*.json ./
-RUN npm ci --omit=dev --no-audit --no-fund \
-    && npm cache clean --force
-
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/generated ./generated
+RUN npm ci --omit=dev --no-audit --no-fund --workspace server && npm cache clean --force
+COPY --from=builder /app/server/dist ./dist
+COPY --from=builder /app/server/generated ./generated
 
 EXPOSE 3000
-
 CMD ["node", "dist/src/index.js"]

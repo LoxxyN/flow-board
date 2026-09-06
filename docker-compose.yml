@@ -11,8 +11,8 @@ services:
 
   migrate:
     build:
-      context: ./server
-      dockerfile: dockerfile
+      context: .
+      dockerfile: server/dockerfile
       target: builder
     env_file:
       - ./server/.env
@@ -27,8 +27,8 @@ services:
 
   server:
     build:
-      context: ./server
-      dockerfile: dockerfile
+      context: .
+      dockerfile: server/dockerfile
     env_file:
       - ./server/.env
     environment:
