@@ -1,10 +1,7 @@
 import js from '@eslint/js'
 import prettier from 'eslint-config-prettier'
 import { defineConfig } from 'eslint/config'
-import path from 'path'
 import tseslint from 'typescript-eslint'
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig([
   ...tseslint.configs.recommended,

@@ -6,6 +6,7 @@
     "build": "tsc",
     "start": "tsx src/index.ts",
     "test": "vitest run",
+    "lint": "eslint .",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
     "db:generate": "prisma generate",

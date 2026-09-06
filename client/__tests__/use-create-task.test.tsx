@@ -10,7 +10,12 @@ const wrapper = ({ children }: { children: ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
-const newTodo = { title: 'Новая задача', description: 'Описание', priority: 'medium', status: 'todo' } as const
+const newTodo = {
+  title: 'Новая задача',
+  description: 'Описание',
+  priority: 'medium',
+  status: 'todo',
+} as const
 
 describe('useCreateTask', () => {
   let fetchMock: ReturnType<typeof vi.fn>
