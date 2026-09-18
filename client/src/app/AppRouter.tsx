@@ -1,5 +1,6 @@
 import { DashboardPage } from '@pages/dashboard-page'
 import { Layout } from '@pages/layout'
+import { NotFound } from '@pages/not-found'
 import { BrowserRouter, Route, Routes } from 'react-router'
 
 export const AppRouter = () => {
@@ -10,6 +11,7 @@ export const AppRouter = () => {
           <Route index element={<DashboardPage />} />
           <Route path="/command" element={'команды'} />
           <Route path="/projects" element={'проекты'} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
