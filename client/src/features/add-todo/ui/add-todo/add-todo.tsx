@@ -1,5 +1,11 @@
+import type { TodoStatus } from '@shared/types'
 import { AddTodoModal } from '../add-todo-modal'
 
-export const AddTodo = ({ triggerButton }: { triggerButton: React.ReactNode }) => {
-  return <AddTodoModal triggerButton={triggerButton} />
+interface AddTodoProps {
+  triggerButton: React.ReactNode
+  defaultSelected: TodoStatus
+}
+
+export const AddTodo = ({ triggerButton, defaultSelected }: AddTodoProps) => {
+  return <AddTodoModal defaultSelected={defaultSelected} triggerButton={triggerButton} />
 }

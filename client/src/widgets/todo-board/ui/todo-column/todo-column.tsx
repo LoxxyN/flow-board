@@ -31,7 +31,7 @@ export const TodoColumn = ({ items, todosCount, listTitle, status }: TodoColumnP
       headerRight={<Chip>{todosCount}</Chip>}
       body={
         <>
-          <AddTodo triggerButton={<TriggerButton />} />
+          <AddTodo defaultSelected={status} triggerButton={<TriggerButton />} />
           <ul
             ref={ref}
             className={`flex flex-col gap-3 mt-3 min-h-24 h-full rounded-lg ${

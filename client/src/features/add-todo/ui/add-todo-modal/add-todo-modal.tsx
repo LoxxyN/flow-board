@@ -19,13 +19,18 @@ interface StatusOptions {
   label: string
 }
 
+interface AddTodoProps {
+  triggerButton: React.ReactNode
+  defaultSelected: TodoStatus
+}
+
 const statusOptions: StatusOptions[] = [
   { id: 'todo', label: 'Todo' },
   { id: 'in_progress', label: 'In progress' },
   { id: 'done', label: 'Done' },
 ]
 
-export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode }) => {
+export const AddTodoModal = ({ triggerButton, defaultSelected }: AddTodoProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [status, setStatus] = useState<TodoStatus | null>('todo')
   const [priority, setPriority] = useState<Iterable<Key>>(new Set(['medium']))
@@ -40,7 +45,7 @@ export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode
       title: formData.title as string,
       description: formData.description as string,
       priority: (settedPriority as ITodo['priority']) ?? 'medium',
-      status: (status as ITodo['status']) ?? 'todo',
+      status: defaultSelected || (status as ITodo['status']),
     }
 
     mutate(newTodo, {
@@ -89,9 +94,9 @@ export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode
           <Label className="mb-1.5">Статус</Label>
           <Select<StatusOptions>
             variant="secondary"
-            value={status}
+            value={defaultSelected}
             onChange={(keys) => setStatus(keys as TodoStatus)}
-            defaultValue="todo"
+            defaultValue={defaultSelected}
             options={statusOptions}
           />
         </TextField>
