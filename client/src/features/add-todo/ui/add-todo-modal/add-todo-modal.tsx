@@ -7,6 +7,7 @@ import {
   Label,
   TextArea,
   TextField,
+  toast,
   type Key,
 } from '@heroui/react'
 import type { ITodo, TodoStatus } from '@shared/types'
@@ -42,7 +43,15 @@ export const AddTodoModal = ({ triggerButton }: { triggerButton: React.ReactNode
       status: (status as ITodo['status']) ?? 'todo',
     }
 
-    mutate(newTodo, { onSuccess: () => setIsOpen(false) })
+    mutate(newTodo, {
+      onSuccess: () => {
+        setIsOpen(false)
+        toast.success('Задача добавлена')
+      },
+      onError: (err) => {
+        toast.danger(`Ошибка ${err.message}`)
+      },
+    })
   }
 
   return (

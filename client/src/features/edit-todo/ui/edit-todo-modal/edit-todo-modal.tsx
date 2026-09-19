@@ -7,6 +7,7 @@ import {
   Label,
   TextArea,
   TextField,
+  toast,
   type Key,
 } from '@heroui/react'
 import type { ITodo, TodoPriority } from '@shared/types'
@@ -47,7 +48,15 @@ export const EditTodoModal = ({
           priority: (settedPriority as ITodo['priority']) ?? 'medium',
         },
       },
-      { onSuccess: () => setIsOpen(false) },
+      {
+        onSuccess: () => {
+          setIsOpen(false)
+          toast.info('Задача отредактирована')
+        },
+        onError: (err) => {
+          toast.danger(`Ошибка ${err.message}`)
+        },
+      },
     )
   }
 

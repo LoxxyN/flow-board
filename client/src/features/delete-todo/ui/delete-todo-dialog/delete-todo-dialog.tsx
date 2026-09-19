@@ -1,4 +1,4 @@
-import { Button } from '@heroui/react'
+import { Button, toast } from '@heroui/react'
 import { AlertDialog } from '@shared/ui'
 import { useState } from 'react'
 import { useDeleteTask } from '../../api'
@@ -14,7 +14,15 @@ export const DeleteTodoDialog = ({
   const { mutate, isPending } = useDeleteTask()
 
   const handleDeleteTask = () => {
-    mutate(id, { onSuccess: () => setIsOpen(false) })
+    mutate(id, {
+      onSuccess: () => {
+        setIsOpen(false)
+        toast.success('Задача удалена')
+      },
+      onError: (err) => {
+        toast.danger(`Ошибка ${err.message}`)
+      },
+    })
   }
 
   return (
